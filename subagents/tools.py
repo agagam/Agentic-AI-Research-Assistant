@@ -50,7 +50,7 @@ search_tool_declaration = FunctionDeclaration(
 
 # --- Research Database Tool ---
 
-def check_if_article_saved(link: str):
+def check_if_article_saved(title: str):
     """
     Checks the database to see if we have already saved this article link.
     Returns True if found, False otherwise.
@@ -161,11 +161,11 @@ summary_tools = Tool(function_declarations=[read_article_tool_declaration])
 
 
 # --- Email Tool ---
-def send_formatted_email(subject: str, html_body: str):
+def send_formatted_email(recipient_email, subject: str, html_body: str):
     """Sends a formatted HTML email."""
     msg = MIMEMultipart()
     msg['From'] = "research-bot@gmail.com"
-    msg['To'] = os.getenv("RECIPIENT_EMAIL")
+    msg['To'] = recipient_email
     msg['Subject'] = subject
 
     msg.attach(MIMEText(html_body, 'html'))
