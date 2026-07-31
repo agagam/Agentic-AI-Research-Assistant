@@ -60,7 +60,13 @@ def check_if_article_saved(title: str):
         host=os.getenv("DB_HOST"),      # The IP address of your Cloud SQL instance
         database="postgres",
         user="postgres",
-        password=os.getenv("DB_PASSWORD")
+        password=os.getenv("DB_PASSWORD"),
+
+        # SSL Configuration
+        sslmode="verify-ca",                   
+        sslrootcert=os.getenv("DB_SSL_CA"),    
+        sslcert=os.getenv("DB_SSL_CERT"),      
+        sslkey=os.getenv("DB_SSL_KEY")   
     )
     
     cur = conn.cursor()
@@ -98,7 +104,13 @@ def save_new_article(title: str, link: str):
         host=os.getenv("DB_HOST"),
         database="postgres",
         user="postgres",
-        password=os.getenv("DB_PASSWORD")
+        password=os.getenv("DB_PASSWORD"),
+
+        # SSL Configuration
+        sslmode="verify-ca",                   
+        sslrootcert=os.getenv("DB_SSL_CA"),    
+        sslcert=os.getenv("DB_SSL_CERT"),      
+        sslkey=os.getenv("DB_SSL_KEY")   
     )
     cur = conn.cursor()
     
