@@ -1,6 +1,0 @@
-google-adk
-requests
-psycopg2-binary
-beautifulsoup4
-smtplib
-vertexai
