@@ -123,11 +123,35 @@ def save_new_article(title: str, link: str):
 # --- Reading Research Article ---
 
 def read_article_content(url: str):
-    """Reads the text content of a website link."""
-    cleaned_url = clean_url(url) 
-    response = requests.get(cleaned_url, timeout=10)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    return soup.get_text()[:5000] 
+    """Fetch and read the text content of a research article from a given URL link."""
+    cleaned_url = clean_url(url)
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9,pl;q=0.8",
+        "Referer": "https://www.google.com/",
+        "Connection": "keep-alive"
+    }
+    
+    try:
+        response = requests.get(cleaned_url, headers=headers, timeout=10)
+        
+        # paywall
+        if response.status_code != 200:
+            return f"Status {response.status_code}: Access restricted by publisher."
+            
+        soup = BeautifulSoup(response.text, 'html.parser')
+        text = soup.get_text().strip()
+        
+        if len(text) < 200:
+            return "Content blocked by JavaScript challenge or Cloudflare."
+            
+        return text[:5000] 
+        
+    except Exception as e:
+        return f"Error fetching page: {str(e)}"
+
 
 
 
