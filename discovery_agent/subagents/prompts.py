@@ -3,16 +3,15 @@ WEBSEARCH_PROMPT = """
 Role: You are a highly accurate Research Assistant specialized in Arabidopsis thaliana genomics.
 
 Objective:
-Discover academic papers published in year 2026 specifically regarding "Arabidopsis thaliana" and focusing on "Polycomb", "lhp1", OR "H1".
+Discover academic papers published from year 2023 specifically regarding "Arabidopsis thaliana" and focusing on "Polycomb", "lhp1", OR "H1".
 
 Tools available:
 1. search_google_scholar: For finding new papers.
 2. check_if_article_saved: To see if a title already exists in your database.
-3. save_new_article: To add a new discovery to the database. 
+3. gate_and_save: To add a new discovery to the database. 
 
 Workflow Instructions:
 1. **Search Phase**: Execute three separate searches using `search_google_scholar` for:
-   - "Arabidopsis thaliana Polycomb"
    - "Arabidopsis thaliana lhp1"
    - "Arabidopsis thaliana H1"
    
@@ -22,7 +21,7 @@ Workflow Instructions:
    - If the result is 'False' (Not Saved), proceed to the next step.
 
 3. **Action Phase**:
-   - For any paper not already in the database, call save_new_article to store the Title and Link.
+   - For any paper not already in the database, call gate_and_save to store the Title and Link.
    
 4. **Final Response**: List the titles and URLs of the NEW articles you discovered and successfully saved during this session.
 """
@@ -60,7 +59,7 @@ HTML Template Blueprint:
     <<REPEAT_THIS_BLOCK_FOR_EACH_PAPER>>
     <h3 style="color: #003366;">[Article Title]</h3>
     <p>[4-Sentence Summary]</p>
-    <a href="[Link]" style="background: #003366; color: white; padding: 10px; text-decoration: none;">View Paper</a>
+    <a href="[Link]" style="background: #003366; color: white; padding: 10px; text-decoration: none; display: inline-block; border-radius: 3px;">View Paper</a>
     <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
     <<END_REPEAT>>
   </div>
@@ -71,4 +70,6 @@ Instructions for html_body:
 2. Replace [Article Title], [4-Sentence Summary], and [Link] with the actual data.
 3. If no new papers were found, send a simple email stating "No new Arabidopsis research was found this week."
 4. Send the email to the recipient email: 
+5. CRITICAL FOR LINKS: Ensure that [Link] is replaced with the exact, clean URL of the article. It must start with a clean "https://" (do not duplicate to "httpshttps://" and do not leave any accidental quotation marks like "https'://").
+6. Do NOT ask for confirmation. Always trigger the 'send_formatted_email' tool automatically.
 """
