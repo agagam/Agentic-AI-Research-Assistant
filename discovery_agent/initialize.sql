@@ -6,5 +6,6 @@ CREATE TABLE websearch_articles (
     abstract_vector     vector(768),              -- pgvector column
     source              TEXT DEFAULT 'weekly_search',  
     status              TEXT DEFAULT 'confirmed',      -- 'confirmed' | 'needs_review' | 'rejected'
-    relevance_reasoning TEXT                       -- LLM classifier output
+    relevance_reasoning TEXT,                       -- LLM classifier output
+    found_at            TIMESTAMP DEFAULT NOW()
 );
